@@ -1,0 +1,14 @@
+#bibles-modal-container {
+    overflow-y: auto !important;
+    max-height: 350px;
+}
+#languages-modal-container {
+    overflow-y: auto !important;
+    max-height: 350px;
+}
+#languages-modal-container ul li a {
+    word-break: break-all;
+}
+#bibles-modal-container-list li a {
+    word-break: break-all;
+}

@@ -1,0 +1,221 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box !important;
+}
+
+/* INICIO ESTILIZACAO PADRAO SITE */
+/* CORES DE BACKGROUND */
+.body { background-color: #f2e4f9; }
+.header, .footer { background-color: #839cb5; }
+.version-bible { background-color: transparent !important; }
+.menu-list-footer { background: transparent !important; }
+.menu-header { background-color: #839cb5 !important; }
+.menu-modal-button { background-color: #839cb5 !important; }
+.modal-content { background-color: #f2e4f9 !important; }
+.menu-modal-button.active { background-color: #35352b !important; }
+.menu-books-list { background-color: transparent !important; }
+.link-menu-modal { background-color: transparent !important; }
+.verse-field { background-color: transparent !important; }
+.verse-style { background-color: transparent !important; }
+/* CORES PADRAO */
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 { color: #35352b; }
+.fa-bars { color: #35352b; }
+.logo { color: #35352b; }
+.dropdown-toggle::after { color: #35352b !important; }
+.version-bible-link { color: #35352b !important; }
+.version-bible-link:hover { color: #839cb5 !important }
+.menu-link-footer { color: #35352b !important; }
+.menu-header-link { color: #35352b !important; }
+.menu-modal-button { color: #35352b !important; }
+.menu-modal-button.active { color: #839cb5 !important; }
+.menu-books-list-link { color: #35352b !important; }
+.btn-modal-button { color: #35352b !important; }
+.verse-field { color: #35352b !important; }
+.verse-style { color: #35352b !important; }
+a { color: #35352b !important; }
+a:hover { color: #0d6efd !important; }
+/* TAMANHOS DE FONTS */
+h1, .h1 { font-size: 1.87rem !important; }
+.card-footer, .num-verse { font-size: 1em !important; }
+.text-muted { font-size: 0.6em }
+.footer-card-font { font-size: 1.4em !important; }
+.version-bible-link { font-size: 1.2em !important; }
+.menu-link-footer { font-size: 1.2em !important; }
+.menu-books-list-link { font-size: 1.2em !important; }
+
+/* FIM DA ESTILIZACAO PADRAO SITE */
+
+/* INIT MODAL STYLE */
+.modal-content { 
+    border-top-left-radius: 0.5rem !important;
+    border-top-right-radius: 0.5rem !important;
+}
+.menu-modal-button { border: 1px solid #839cb5 !important; }
+.menu-modal-button.active { border: 1px solid #35352b !important; }
+.btn-modal-button { text-decoration: none !important; }
+/* END MODAL STYLE */
+
+/* INIT FOOTER STYLE */
+.menu-list-footer { 
+    padding: 0 !important; 
+    border-width: 0 !important; 
+}
+.menu-link-footer { padding: 5px 0 !important; }
+
+.col-footer { 
+    position: relative;
+}
+.border-menu-footer {
+    position: absolute;
+    left: 0px;
+    top: -1.5em;
+    width: 30%;
+    height: 2px;
+    background-color: #f2e4f9;
+}
+.unsigned-list-menu {
+    float: left !important;
+    width: 50%;
+}
+/* END FOOTER STYLE */
+
+.container-fluid {
+    padding: 0 !important;
+}
+
+.header, .footer {
+    width: 100%;
+    max-width: 100%;
+}
+.main {
+    padding: 3em 0;
+}
+
+.nav-search-button {
+    padding: 0 !important;
+}
+.dropdown-menu[data-bs-popper] {
+    left: initial !important;
+}
+.btn-secondary {
+    background-color: transparent !important;
+    border-color: transparent !important;
+}
+
+.dropdown-toggle::after {
+    color: blue;
+}
+.card {
+    border: 0 !important;
+    border-radius: 0 !important;
+    background-color: transparent !important;
+}
+.card-body {
+    padding: 1em 0 !important;
+}
+.text-muted {
+    text-decoration:none;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+.row {
+    padding: 0 !important;
+    --bs-gutter-x: auto !important;
+}
+.col {
+    padding: 0 !important;
+}
+
+/* INIT DAILY VERSES */
+.num-verse {
+    padding-right: 0.5rem;
+    position: absolute;
+    top: -2px;
+    left: -7px;
+}
+
+.content-verse {
+    position: relative !important;
+    padding-left: 5px;
+}
+/* END DAILY VERSES*/
+.version-bible {
+    padding: 0px !important;
+    border: 0px !important;
+}
+
+.version-bible-link {
+    padding-left: 0px !important;
+}
+
+.footer {
+    padding: 5em 0 !important;
+}
+
+/* INIT BOOKS PAGE */
+.verse-field {
+    width: 10%;
+    max-width: 100%;
+    text-align: center;
+    padding: 0 !important;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    border: 0 !important;
+    text-decoration: none;
+}
+.group-verse {
+    width: 100%;
+    height: 100%;
+    display: block;
+    text-decoration: none;
+}
+
+.menu-books {
+    float: left !important;
+    width: 50%;
+}
+
+.menu-books-list-link { padding: 5px 0 !important; }
+.menu-books-list { 
+    padding: 0 !important; 
+    border-width: 0 !important; 
+}
+/* END BOOKS PAGE */
+
+/* INIT VERSES PAGES */
+.verse-style {
+    border: 0 !important;
+    padding-left: 0 !important;
+    font-size: 1.25rem !important;
+}
+.verse-style-content {
+    margin-left: 0 !important;
+    position: relative !important;
+}
+.verse-style-num {
+    position: absolute;
+    top: -2px;
+    left: -7px;
+    font-size: 0.6em !important;
+}
+/* END VERSES PAGES
+
+/* INIT BUTTON LEFT RIGHT */
+.field-button-left-right{
+    width: 100% !important;
+    display: inline-block !important;
+    padding-top: 3em !important;   
+}
+.button-left, .button-right{
+    width: 50% !important;
+}
+.button-left {
+    float: left !important;
+}
+.button-right {
+    float: right !important;
+}
+/* END BUTTON LEFT RIGHT*/
