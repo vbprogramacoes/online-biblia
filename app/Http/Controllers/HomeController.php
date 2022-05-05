@@ -8,9 +8,9 @@ use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
+
     public function index() {
-        
-        
+       
         $languages = $this->consultar('languages');
         $lang_bibles = array();
         $countallversions = 0;
