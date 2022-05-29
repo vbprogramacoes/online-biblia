@@ -46,6 +46,16 @@
         var url = "{{ url('/') }}";
     </script>
     <meta name="google-site-verification" content="I0ieriBk6AR0VVbNNcE6WUf-jQxtPWdNJm7nLH_rj74" />
+    
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SQRWKSSJ7S"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-SQRWKSSJ7S');
+    </script>
 </head>
 <body>
     <div class="container-fluid body">
