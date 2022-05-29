@@ -45,6 +45,7 @@
 
         var url = "{{ url('/') }}";
     </script>
+    <meta name="google-site-verification" content="I0ieriBk6AR0VVbNNcE6WUf-jQxtPWdNJm7nLH_rj74" />
 </head>
 <body>
     <div class="container-fluid body">
