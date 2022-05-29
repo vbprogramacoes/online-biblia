@@ -44,23 +44,13 @@ Route::get('/{version}', 'HomeController@version');
 
 /*
 |--------------------------------------------------------------------------
-| Index Books
-|--------------------------------------------------------------------------
-|
-| Route for books of the version
-|
-*/
-Route::get('/{version}/livros', 'BooksController@index');
-
-/*
-|--------------------------------------------------------------------------
 | Index version
 |--------------------------------------------------------------------------
 |
 | Route for books of the version
 |
 */
-Route::get('/{version}/{book}', 'BooksController@book');
+Route::get('/{version}/{book}', 'BooksController@index');
 
 /*
 |--------------------------------------------------------------------------

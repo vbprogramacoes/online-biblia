@@ -10,34 +10,10 @@ class ChapterController extends Controller
 {
     public function index(Request $request, $version_url = "", $book_url = "", $chapter_url = "" ) {
         
-        $version_url_data = $this->consultar("version/$version_url");
-        $versabbr   = strtoupper($version_url);
-        $title = "Bíblia online {$version_url_data[0]->version} ($versabbr)";
-        $languages = $this->consultar('languages');
-        $lang_bibles = array();
-        $countallversions = 0;
-        foreach ($languages as $language) {
-            
-            $lang               = $language->language;
-            $lang_bibles[$lang] = array();
-            $versions_bibles    = $this->consultar("versions/language/$lang");
-            $books_api          = "books/language/$lang";
-            $books_data[$lang]  = $this->consultar($books_api);
-            foreach($versions_bibles as $version) {
-                
-                $version_data = array('abb' => $version->abbreviation, 'version' => $version->version);
-                array_push($lang_bibles[$lang], $version_data);
-                $countallversions++;
-            }
-        }
-
-        //GET THE VERSES OF THE CHAPTER
-        $language = "portuguese";
+        $language       = "portuguese";
         $chapter_api    = "verses/language/$language/version/$version_url/bookabbreviationurl/$book_url/chapter/$chapter_url";
-        $chapter_data   = $this->consultar($chapter_api);
-        //TRATAMENT OF THE DEFAULT DATA OF SITE
-        $menu = array('home', 'bibles', 'seeallbibles');
-        if (isset($chapter_data->message)) {
+        $consult    = $this->consultar($chapter_api);
+        if (isset($consult->message)) {
             $menu = array('home', 'bibles', 'seeallbibles');
             $meta_language      = 'pt';
             $meta_charset       = 'utf-8';
@@ -57,17 +33,42 @@ class ChapterController extends Controller
                 'title'             => __('messages.page_not_found'),
             );
             $data = $this->transformeToObject($arraytotransforme);
-            $data->header = $this->getHeader($lang_bibles, $menu, $version_url);
-            $data->footer = $this->getFooter($menu, $books_data, $version_url);
             return view('404', ['data' => $data]);
         }
+        $lang_bibles        = array();
+        $countallversions   = count($consult->data);
+        $languages          = $consult->header_footer->header->lang;
+        
+        //CONSULTA DAS VERSOES
+        foreach ($languages as $lang) {
+            
+            //VERSIONS BY LANGUAGE
+            $language               = $lang->language;
+            $versions_bibles        = array();
+            $consult_versions       = $this->consultar("versions/language/$language");
+            $lang_bibles[$language] = array();
+            foreach($consult_versions->data as $ver) {
+                
+                $version_data = array('abb' => $ver->abbreviation, 'version' => $ver->version);
+                array_push($lang_bibles[$language], $version_data);
 
+                if (strtolower($ver->abbreviation) == strtolower($version_url)) {
+                    $version_url_data = $ver;
+                }
+            }
+
+            //BOOKS BY LANGUAGE
+            $books_data[$language]  = $consult->header_footer->footer->books;
+        }
+
+        //TRATAMENT OF THE DEFAULT DATA OF SITE
+        $menu           = array('home', 'bibles', 'seeallbibles');
         $left_right = array('left' => array(), 'right' => array());
         foreach ($books_data['portuguese'] as $bookd) {
             if ($bookd->abbreviation_url == $book_url) {
                 
                 $left_right['left']['show']     = true;
-                $left_right['right']['show']     = true;
+                $left_right['right']['show']    = true;
                 $left_url = ((int) $chapter_url ) - 1;
                 $right_url = ((int) $chapter_url ) + 1;
                 $left_right['left']['url']     = url("/$version_url/$book_url/$left_url");
@@ -92,13 +93,15 @@ class ChapterController extends Controller
         }
 
         //CRIANDO O CONTEUDO DA PAGINA
+        $versabbr           = strtoupper($version_url);
+        $title              = "Bíblia online {$version_url_data->version} ($versabbr)";
         $meta_language      = 'pt';
         $meta_charset       = 'utf-8';
         $meta_content_type  = 'utf-8';
-        $menu = array('home', 'bibles', 'seeallbibles');
-        $version_abb = strtoupper($version_url_data[0]->abbreviation);
-        $version_ver = $version_url_data[0]->version;
-        $url_data = url('');
+        $menu               = array('home', 'bibles', 'seeallbibles');
+        $version_abb        = strtoupper($version_url_data->abbreviation);
+        $version_ver        = $version_url_data->version;
+        $url_data           = url('');
         if (stripos($url_data, 'https://') !== false) {
             str_replace('https://', '', $url_data);
         } elseif(stripos($url_data, 'http://') !== false) {
@@ -109,9 +112,10 @@ class ChapterController extends Controller
                 $book_data = $bookd;
             }
         }
-        $title              = "$book_data->book $chapter_url - $book_url $chapter_url";
+        
+        $title              = "$book_data->book $chapter_url - {$version_abb} - $version_ver - " . __('messages.onlinebible');
+        $meta_title         = "$book_data->book $chapter_url - {$version_abb} - $version_ver - " . __('messages.onlinebible');
         $h1                 = "$book_data->book $chapter_url";
-        $meta_title         = "$book_data->book $chapter_url - $book_url $chapter_url";
         $meta_description   = "$book_data->book $chapter_url - $book_url $chapter_url. Cápitulos, versículos e versículos compostos para estudo e leitura";
         $canonical          = url("/$version_url/$book_url/$chapter_url");
         $icon               = '';
@@ -128,13 +132,13 @@ class ChapterController extends Controller
             'canonical'         => $canonical,
             'icon'              => $icon,
             'left_right'        => $left_right,
-            'chapter_data'      => $chapter_data,
+            'chapter_data'      => $consult->data,
             'version'           => ($version_url == "") ? config('data.version_default') : $version_url,
         );
 
-        $data = $this->transformeToObject($arraytotransforme);
-        $data->header = $this->getHeader($lang_bibles, $menu, $version_url);
-        $data->footer = $this->getFooter($menu, $books_data, $version_url);
+        $data           = $this->transformeToObject($arraytotransforme);
+        $data->header   = $this->getHeader($lang_bibles, $menu, $version_url);
+        $data->footer   = $this->getFooter($menu, $books_data, $version_url);
         return view('chapter', ['data' => $data]);
     }
 

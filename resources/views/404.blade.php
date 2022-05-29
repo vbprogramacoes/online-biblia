@@ -1,10 +1,12 @@
 @extends('layouts.app')
-
-@section('header')
-    @component('components.header', ['data' => $data->header])
-    @endcomponent
-@endsection
-
+<div class="container header-nav">
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand mb-0 logo" href="{{ url('') }}">@lang('messages.onlinebible')</a>
+        </div>
+        <div class="container-fluid d-none"></div>
+    </nav>
+</div>
 @section('main')
     @parent
     <div class="container">
@@ -12,8 +14,4 @@
         <p>@lang('messages.page_not_found_content').</p>
         <p><a href="/">@lang('messages.return_to_home')</a></p>
     </div>
-@endsection
-@section('footer')
-    @component('components.footer', ['data' => $data->footer])
-    @endcomponent
 @endsection

@@ -6,13 +6,13 @@
 
 /* INICIO ESTILIZACAO PADRAO SITE */
 /* CORES DE BACKGROUND */
-.body { background-color: #f2e4f9; }
+.body { background-color: #f9f9f9; }
 .header, .footer { background-color: #839cb5; }
 .version-bible { background-color: transparent !important; }
 .menu-list-footer { background: transparent !important; }
 .menu-header { background-color: #839cb5 !important; }
 .menu-modal-button { background-color: #839cb5 !important; }
-.modal-content { background-color: #f2e4f9 !important; }
+.modal-content { background-color: #f9f9f9 !important; }
 .menu-modal-button.active { background-color: #35352b !important; }
 .menu-books-list { background-color: transparent !important; }
 .link-menu-modal { background-color: transparent !important; }
@@ -56,12 +56,35 @@ h1, .h1 { font-size: 1.87rem !important; }
 .btn-modal-button { text-decoration: none !important; }
 /* END MODAL STYLE */
 
+/* INIT HEADER STYLE */
+.link-menu-modal .btn-modal-button {
+    width: 100%;
+    text-align: left !important;
+}
+.nav-menu {
+    height: 50px;
+}
+@media (max-width: 768px) {
+    .nav-logo {
+        width: 50% !important;
+    }
+    .nav-menu {
+        width: 50% !important;
+    }
+}
+
+/* END HEADER STYLE */
+
 /* INIT FOOTER STYLE */
 .menu-list-footer { 
     padding: 0 !important; 
     border-width: 0 !important; 
 }
-.menu-link-footer { padding: 5px 0 !important; }
+.menu-link-footer { 
+    padding: 5px 0 !important;
+    text-align: justify;
+    word-break: break-word;
+}
 
 .col-footer { 
     position: relative;
@@ -178,7 +201,11 @@ h1, .h1 { font-size: 1.87rem !important; }
     width: 50%;
 }
 
-.menu-books-list-link { padding: 5px 0 !important; }
+.menu-books-list-link { 
+    padding: 5px 0 !important;
+    text-align: justify;
+    word-break: break-word;
+}
 .menu-books-list { 
     padding: 0 !important; 
     border-width: 0 !important; 
@@ -219,3 +246,32 @@ h1, .h1 { font-size: 1.87rem !important; }
     float: right !important;
 }
 /* END BUTTON LEFT RIGHT*/
+.space-h1 {
+    margin-top: 1.5em !important;
+}
+/* ESTILIZAÇÃO DA PAGINÁ CAPITULO */
+.chapter-num {
+    position: absolute;
+    top: 10px;
+    left: 6px;
+}
+.chapter-content {
+    margin: 0;
+    margin-left: 5px;
+    text-align: justify;
+    word-break: break-word;
+}
+.nav-link {
+    min-height: 50px;
+}
+
+@media (max-width: 768px) {
+    .col {
+        flex: none !important;
+        width: 100% !important;
+    }
+
+    .border-menu-footer {
+        top: -0.5em !important;
+    }
+}

@@ -11,21 +11,27 @@ class HomeController extends Controller
 
     public function index() {
        
-        $languages = $this->consultar('languages');
+        $versions_consult = $this->consultar('versions');
         $lang_bibles = array();
-        $countallversions = 0;
-        foreach ($languages as $language) {
+        $countallversions = count($versions_consult->data);
+        $languages = $versions_consult->header_footer->header->lang;
+        foreach ($languages as $lang) {
             
-            $lang               = $language->language;
-            $lang_bibles[$lang] = array();
-            $versions_bibles    = $this->consultar("versions/language/$lang");
-            $books_api          = "books/language/$lang";
-            $books_data[$lang]  = $this->consultar($books_api);
+            $language = $lang->language;
+            //VERSIONS BY LANGUAGE
+
+            $versions_bibles = array();
+            $versions_bibles = $versions_consult->data;
+            $lang_bibles[$language] = array();
             foreach($versions_bibles as $version) {
+
                 $version_data = array('abb' => $version->abbreviation, 'version' => $version->version);
-                array_push($lang_bibles[$lang], $version_data);
-                $countallversions++;
+                array_push($lang_bibles[$language], $version_data);
             }
+
+            //BOOKS BY LANGUAGE
+
+            $books_data[$language]  = $versions_consult->header_footer->footer->books;
         }
 
         //GET THE DAILYVERSES
@@ -36,7 +42,7 @@ class HomeController extends Controller
         $meta_charset       = 'utf-8';
         $meta_content_type  = 'utf-8';
         $title              = __('messages.onlinebible');
-        $meta_title         = __('messages.onlinebible');
+        $meta_title         = __('messages.onlinebible') . ". " . __('messages.readythebible');
         $meta_description   = "Diversas versões da bíblia. Cápitulos, versículos e versículos compostos para estudo e leitura em diversas versões da bíblia";
         $canonical          = url('');
         $icon               = '';
@@ -72,48 +78,56 @@ class HomeController extends Controller
      */
     public function version(Request $request, $version = '') {
         
-        //FIRSTLY WE ARE LOOKING FOR THE VERSION DATA
-        
-        $languages          = $this->consultar('languages');
-        $lang_bibles        = array();
-        $countallversions   = 0;
-        $lang               = 'portuguese';
-        $versions_bibles    = $this->consultar("versions/language/$lang");
-        $books_api          = "books/language/$lang";
-        $books_data[$lang]  = $this->consultar($books_api);
-        $lang_bibles[$lang] = array();
-        foreach ($versions_bibles as $v) {
-            
-            $vd = array('abb' => $v->abbreviation, 'version' => $v->version);
-            array_push($lang_bibles[$lang], $vd);
-            $countallversions++;
-        }
-        
-        //GET THE DAILYVERSES
-        $menu = array('home', 'bibles', 'seeallbibles');
-        $api_version  = "version/$version";
-        $version_data = $this->consultar($api_version);
-        if (isset($version_data->message)) {
-            $title = "Versículo deste livro não existe.";
-            $data = $this->transformeToObject($title);
-            $data->header = $this->getHeader($lang_bibles, $menu, $version);
-            $data->footer = $this->getFooter($menu, $books_data, $version);
+        $consult            = $this->consultar('versions');
+        if (isset($consult->message)) {
+
+            $title          = "Não temos esta versão ou não existe existe.";
+            $data           = $this->transformeToObject($title);
+            $data->header   = $this->getHeader($lang_bibles, $menu, $version);
+            $data->footer   = $this->getFooter($menu, $books_data, $version);
             return view('404', ['data' => $data]);
         }
+        $lang_bibles        = array();
+        $countallversions   = count($consult->data);
+        $languages = $consult->header_footer->header->lang;
+        foreach ($languages as $lang) {
+            
+            //VERSIONS BY LANGUAGE
+            $language = $lang->language;
+            $versions_bibles = array();
+            $versions_bibles = $consult->data;
+            $lang_bibles[$language] = array();
+            foreach($versions_bibles as $ver) {
+
+                $version_data = array('abb' => $ver->abbreviation, 'version' => $ver->version);
+                array_push($lang_bibles[$language], $version_data);
+                if (strtolower($ver->abbreviation) == strtolower($version)) {
+                    $version_url_data['abb']        = strtoupper($ver->abbreviation);
+                    $version_url_data['version']    = $ver->version;
+                }
+            }
+
+            //BOOKS BY LANGUAGE
+            $books_data[$language]  = $consult->header_footer->footer->books;
+        }
         
-        $dailyverses = $this->getDailyVerses($books_data[$lang], $lang, $version);
-        
+        $lang_default = 'portuguese';
+
+        //GET THE DAILYVERSES
+        $dailyverses = $this->getDailyVerses($books_data[$lang_default], $lang_default, $version);
+
         //CRIANDO OS DADOS DA PÁGINA
+        $menu               = array('home', 'bibles', 'seeallbibles');
         $meta_language      = 'pt';
         $meta_charset       = 'utf-8';
         $meta_content_type  = 'utf-8';
-        $title              = __('messages.onlinebible') . " {$version_data[0]->abbreviation} - {$version_data[0]->version}";
-        $h1                 = __('messages.onlinebible') . " {$version_data[0]->abbreviation} - {$version_data[0]->version}";
-        $meta_title         = __('messages.onlinebible') . " {$version_data[0]->abbreviation} - {$version_data[0]->version}";
-        $meta_description   = "Versão {$version_data[0]->abbreviation} - {$version_data[0]->version}. Cápitulos, versículos e versículos compostos para estudo e leitura";
+        $title              = __('messages.onlinebible') . " - {$version_url_data['abb']} - {$version_url_data['version']} ";
+        $meta_title         = __('messages.onlinebible') . " {$version_url_data['abb']} - {$version_url_data['version']} ";
+        $h1                 = __('messages.onlinebible') . " {$version_url_data['abb']} - {$version_url_data['version']}";
+        $meta_description   = "Versão {$version_url_data['abb']} - {$version_url_data['version']}. Cápitulos, versículos e versículos compostos para estudo e leitura";
         $canonical          = url("/$version");
         $icon               = '';
-        $arraytotransforme = array(
+        $arraytotransforme  = array(
             'footer'            => '',
             'header'            => '',
             'meta_language'     => $meta_language,
@@ -128,10 +142,12 @@ class HomeController extends Controller
             'lang_bibles'       => $lang_bibles,
             'dailyverses'       => $dailyverses,
             'countallversions'  => $countallversions,
+            'version'           => $version,
+            'books_data'        => $books_data
         );
-        $data = $this->transformeToObject($arraytotransforme);
-        $data->header = $this->getHeader($lang_bibles, $menu, $version);
-        $data->footer = $this->getFooter($menu, $books_data, $version);
+        $data           = $this->transformeToObject($arraytotransforme);
+        $data->header   = $this->getHeader($lang_bibles, $menu, $version);
+        $data->footer   = $this->getFooter($menu, $books_data, $version);
         
         return view('versions', ['data' => $data]);
     }
@@ -145,7 +161,7 @@ class HomeController extends Controller
      */
     public function getDailyVerses($books_data = array(), $language = "", $version = "") {
 
-        $dvs        = DB::table('dailyverses')->where('today', true)->get();
+        $dvs = DB::table('dailyverses')->where('today', true)->get();
 
         if ($language == "") {
 
@@ -186,12 +202,11 @@ class HomeController extends Controller
             $api = str_replace('{version}', $version, $api);
             $api = str_replace('{book_abreviation_url}', $dv->book, $api);
             $api = str_replace('{chapter}', $dv->chapter, $api);
-            
             $res_api = $this->consultar($api);
             
             $vs_api = array();
-            
-            foreach($res_api as $rapi) {
+
+            foreach($res_api->data as $rapi) {
                 
                 $v_api['version']   = $version;
                 $v_api['book']      = $dv->book;
@@ -239,6 +254,7 @@ class HomeController extends Controller
 
         $bibleapiurl = config('bibleapi.url');
         $url = $bibleapiurl . $api;
+        
         $ch = curl_init();
         curl_setopt_array($ch, array(
             CURLOPT_URL => $url,

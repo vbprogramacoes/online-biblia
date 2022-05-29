@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'url' => 'http://apibiblia.com.br/api/',
+    'url' => 'https://apibiblia.com.br/api/',
 ];

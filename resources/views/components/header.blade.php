@@ -1,7 +1,7 @@
 @php unset($data->menu[2]);@endphp
 <div class="container header-nav">
     <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container-fluid">
+        <div class="container-fluid nav-logo">
             <a class="navbar-brand mb-0 logo" href="{{ url($data->version) }}">@lang('messages.onlinebible')</a>
         </div>
         <div class="container-fluid d-none"></div>
@@ -19,7 +19,7 @@
             </div>
         </form>
         */?>
-        <div class="dropdown container-fluid justify-content-end">
+        <div class="dropdown container-fluid justify-content-end nav-menu">
             <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 <i class="fa fa-bars" aria-hidden="true"></i>
             </button>

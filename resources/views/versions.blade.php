@@ -7,8 +7,10 @@
     @parent
     @component('components.dailyverses', ['dailyverses' => $data->dailyverses])
     @endcomponent
+    @component('components.books', ['data' => $data])
+    @endcomponent
     <div class="container">
-        <h1 class="h1">@lang('messages.bibles') <small class="text-muted">@lang('messages.descriptionhome', ['amount' => ($data->countallversions - 1)])</small></h1>
+        <h1 class="h1 space-h1">@lang('messages.bibles') <small class="text-muted">@lang('messages.descriptionhome', ['amount' => ($data->countallversions)])</small></h1>
         <div class="row">
             <div class="col">
                 <ul class="list-group list-group-flush">
